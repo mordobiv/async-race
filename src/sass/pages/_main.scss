@@ -1,0 +1,18 @@
+.car-block {
+  border: 1px solid black;
+
+  .race {
+    // display: flex;
+    // justify-content: space-between;
+    padding: 2% 5%;
+
+    .car__img {
+      width: 40px;
+      transform: rotate(90deg);
+    }
+
+    .flag__img {
+      width: 40px;
+    }
+  }
+}
