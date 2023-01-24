@@ -90,7 +90,6 @@ td {
 .car-block .race .flag::before {
   content: "|";
   display: block;
-  /* height: 2px; */
   font-size: 30px;
   position: relative;
   right: 0;
