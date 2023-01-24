@@ -100,7 +100,7 @@ td {
   width: 23px;
 }
 
-.car__img {
+#car__img {
   width: 23px;
   transform: rotate(90deg);
 }
