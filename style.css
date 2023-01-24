@@ -56,23 +56,41 @@ table {
   box-sizing: border-box;
 }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+table {
+  border: 1px solid black;
+  margin-top: 20px;
+}
+
+th {
+  padding: 10px;
+  border: 1px solid black;
+}
+
+td {
+  width: 100px;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid black;
+}
+
 .car-block {
   border: 1px solid black;
 }
 .car-block .race {
   padding: 2% 5%;
 }
-.car-block .race .car__img {
-  width: 23px;
-  transform: rotate(90deg);
-}
 .car-block .race .flag__img {
   width: 23px;
 }
 
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
+.car__img {
+  width: 23px;
+  transform: rotate(90deg);
 }
 
 /*# sourceMappingURL=style.css.map */
