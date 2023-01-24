@@ -84,7 +84,20 @@ td {
 .car-block .race {
   padding: 2% 5%;
 }
-.car-block .race .flag__img {
+.car-block .race .flag {
+  text-align: right;
+}
+.car-block .race .flag::before {
+  content: "|";
+  display: block;
+  /* height: 2px; */
+  font-size: 30px;
+  position: relative;
+  right: 0;
+  color: red;
+  bottom: 28px;
+}
+.car-block .race .flag .flag__img {
   width: 23px;
 }
 
