@@ -1,7 +1,21 @@
 import { carsPerGaragePage } from '../../../config';
-import { getAllCars } from '../../../data-controller/cars';
-import { createButton, createNode } from '../../../helpers';
+import { getAllCars, getCarsAmount } from '../../../data-controller/cars';
+import { createButton, createNode, getCurrentGaragePage, setCurrentGaragePage } from '../../../helpers';
+import updateGaragePage from '../modules/update-dynamic-content/update-garage-dynamic-content';
 import renderGarageCars from './garage-cars';
+
+const updateGaragePageOptions = {
+  updatePagination: true,
+  updatePageNumber: true,
+}
+
+function renderCurrentPageBlock() {
+  const pageNumber = createNode('page-number');
+  const pageNumberLabel = createNode('page-number__label', 'Page #');
+  const pageNumberValue = createNode('page-number__value', sessionStorage.getItem('garagePage') || '1');
+  pageNumber.append(pageNumberLabel, pageNumberValue);
+  return pageNumber;
+}
 
 export async function renderGaragePagination() {
   const paginationBlock = createNode('pagination');
@@ -18,31 +32,26 @@ export async function renderGaragePagination() {
   }
 
   next.addEventListener('click', async () => {
+    next.disabled = true;
     const resetButton = document.querySelector('.button__reset') as HTMLButtonElement;
     if (resetButton) resetButton.click();
-    carsAmount = (await getAllCars()).length;
+    carsAmount = await getCarsAmount();
 
-    currentPage = sessionStorage.getItem('garagePage');
-    sessionStorage.setItem('garagePage', `${(+(currentPage || 0) + 1)}`);
-    currentPage = sessionStorage.getItem('garagePage');
-
-    if (carsAmount && currentPage) {
-      if (+carsAmount <= carsPerGaragePage * +currentPage) next.disabled = true;
-    }
+    currentPage = getCurrentGaragePage();
+    setCurrentGaragePage(+currentPage + 1);
+    currentPage = currentPage + 1;
 
     const garageCars = await renderGarageCars();
     const garageView = document.querySelector('.garage');
     garageView?.append(garageCars);
 
-    previous.disabled = false;
+    await updateGaragePage(updateGaragePageOptions);
   });
 
   previous.addEventListener('click', async () => {
-    next.disabled = false;
-    currentPage = sessionStorage.getItem('garagePage');
-    sessionStorage.setItem('garagePage', `${(+(currentPage || 1)) - 1}`);
-    currentPage = sessionStorage.getItem('garagePage');
-    if (currentPage && currentPage === '1') previous.disabled = true;
+    previous.disabled = true;
+    currentPage = getCurrentGaragePage();
+    setCurrentGaragePage(+currentPage - 1);
 
     const garageCars = await renderGarageCars();
     const garageView = document.querySelector('.garage');
@@ -50,9 +59,12 @@ export async function renderGaragePagination() {
 
     const resetButton = document.querySelector('.button__reset') as HTMLButtonElement;
     if (resetButton) resetButton.click();
+
+    updateGaragePage(updateGaragePageOptions);
   });
 
-  paginationBlock.append(previous, next);
+  const currentPageBlock = renderCurrentPageBlock();
+  paginationBlock.append(previous, currentPageBlock, next);
   return paginationBlock;
 }
 

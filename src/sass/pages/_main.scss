@@ -1,30 +1,129 @@
-.car-block {
-  border: 1px solid black;
+.buttons {
+  display: flex;
+  justify-content: center;
 
-  .race {
-    // display: flex;
-    // justify-content: space-between;
-    padding: 2% 5%;
+  .button {
+    margin: 1%;
+    width: 49%
+  }
+}
 
-    .flag {
-      text-align: right;
-    
-      &::before {
-        content: '|';
-        display: block;
-        font-size: 30px;
-        position: relative;
-        right: 0;
-        color: red;
-        bottom: 28px;
-      }
+.car-management {
+  display: flex;
+  justify-content: space-around;
 
-      .flag__img {
-        width: 23px;
+  .create, .edit {
+    padding: 10px;
+    border: 1px solid gainsboro;
+
+    .header__label {
+      text-transform: uppercase;
+      font-style: italic;
+      text-align: center;
+    }
+
+    input {
+      margin: 5px;
+    }
+
+    .color-block {
+      margin: 5% 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+
+    .button {
+      display: flex;
+      margin: auto;
+
+    }
+
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-around;
+
+  .page-number {
+    display: flex;
+    align-items: center;
+  }
+
+  .button {
+    width: 40%;
+  }
+}
+
+.controls {
+  margin: 2% 10%;
+  border: 1px solid gainsboro;
+  display: flex;
+  justify-content: space-around;
+
+  .button {
+    width: 20%;
+  }
+}
+
+.garage {
+
+  margin: 2% 5%;
+
+  .car-block {
+    border: 1px solid black;
+  
+    .race {
+      padding: 2% 5%;
+  
+      .flag {
+        text-align: right;
+      
+        &::before {
+          content: '|';
+          display: block;
+          font-size: 30px;
+          position: relative;
+          right: 0;
+          color: red;
+          bottom: 28px;
+        }
+  
+        .flag__img {
+          width: 23px;
+        }
       }
     }
   }
+
+  .header {
+    display: flex;
+    justify-content: center;
+    margin: 3%;
+    padding: 1%;
+    border: 1px solid gainsboro;
+    background-color: beige;
+    
+    .header__label {
+      margin-right: 5px;
+    }
+
+    .header__value {
+      color:orchid;
+    }
+  }
+
+  .modifier {
+    display: flex;
+    justify-content: space-around;
+
+    .button {
+      width: 30%;
+    }
+  }
 }
+
 
 #car__img {
   width: 23px;

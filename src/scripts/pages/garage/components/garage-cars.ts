@@ -1,4 +1,4 @@
-import { createNode, createButton, createImg, renderColorSvg } from '../../../helpers';
+import { createNode, createButton, createImg, renderColorSvg, getCurrentGaragePage, setCurrentGaragePage } from '../../../helpers';
 import { getAllCars, removeCar } from '../../../data-controller/cars';
 import { startStopCar, checkEngine } from '../../../data-controller/engine';
 import {
@@ -7,24 +7,7 @@ import {
 import getDriveStep from '../../../animation/drive';
 import ICar from '../../../interfaces/car';
 import { carsPerGaragePage } from '../../../config';
-
-async function renderHeader() {
-  const garageCarsHeader = createNode('header');
-  const garageCarsHeaderLabel = createNode('header__label', 'Garage');
-  const carsAmount = await getAllCars();
-  const garageCarsHeaderValue = createNode('header__value', carsAmount.length);
-
-  garageCarsHeader.append(garageCarsHeaderLabel, garageCarsHeaderValue);
-  return garageCarsHeader;
-}
-
-function renderCurrentPage() {
-  const pageNumber = createNode('page-number');
-  const pageNumberLabel = createNode('page-number__label', 'Page #');
-  const pageNumberValue = createNode('page-number__value', sessionStorage.getItem('garagePage') || '1');
-  pageNumber.append(pageNumberLabel, pageNumberValue);
-  return pageNumber;
-}
+import updateGaragePage from '../modules/update-dynamic-content/update-garage-dynamic-content';
 
 export function renderSpecificCar(car: ICar) {
   const carBlock = createNode('car-block');
@@ -40,15 +23,26 @@ export function renderSpecificCar(car: ICar) {
   });
 
   const removeButton = createButton('remove');
-  removeButton.addEventListener('click', () => {
+  const removeOptions = {
+    updateHeader: true,
+    updatePagination: true,
+    updatePageNumber: true,
+  }
+  removeButton.addEventListener('click', async () => {
     removeCar(car.id);
     carBlock.remove();
     const carsHeaderAmountBlock = document.querySelector('.header__value');
     if (carsHeaderAmountBlock && carsHeaderAmountBlock.textContent) {
       carsHeaderAmountBlock.textContent = `${+carsHeaderAmountBlock.textContent - 1}`;
     }
-    deleteWinner(car.id);
+    await deleteWinner(car.id);
+
+    const carsBlock = document.querySelector('.cars');
+    const currentGaragePage = getCurrentGaragePage();
+    if (carsBlock?.childElementCount === 0 && currentGaragePage !== '1') setCurrentGaragePage(+currentGaragePage - 1);
+    updateGaragePage(removeOptions);
   });
+
   carModifiers.append(selectButton, removeButton);
 
   const carName = createNode('name', car.name);
@@ -121,6 +115,7 @@ export function renderSpecificCar(car: ICar) {
 }
 
 async function renderCars() {
+  document.querySelector('.cars')?.remove();
   const cars = createNode('cars');
   const garagePage = sessionStorage.getItem('garagePage');
   let allCars = [];
@@ -135,15 +130,4 @@ async function renderCars() {
   return cars;
 }
 
-async function renderGarageCars() {
-  if (document.querySelector('.garage-cars')) document.querySelector('.garage-cars')?.remove();
-  const garageCars = createNode('garage-cars');
-  const header = await renderHeader();
-  const currentPage = renderCurrentPage();
-  const cars = await renderCars();
-
-  garageCars.append(header, currentPage, cars);
-  return garageCars;
-}
-
-export default renderGarageCars;
+export default renderCars;

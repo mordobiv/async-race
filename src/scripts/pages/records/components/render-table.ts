@@ -26,7 +26,7 @@ async function renderTable(urlOptions?: urlWinnersSort) {
     renderTable(options);
   });
 
-  const tableHeaderTime = createTableHeader('header__time', 'Time ⇅');
+  const tableHeaderTime = createTableHeader('header__time clickable', 'Time ⇅');
   tableHeaderTime.addEventListener('click', () => {
     const options = {
       sort: 'time',

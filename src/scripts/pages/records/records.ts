@@ -4,7 +4,7 @@ import renderTable from './components/render-table';
 import renderWinnerHeader from './components/winner-header';
 
 async function renderRecordsPage() {
-  sessionStorage.setItem('winnersPage', '1');
+  if (!sessionStorage.getItem('winnersPage')) sessionStorage.setItem('winnersPage', '1');
   const body = document.querySelector('body');
   if (body) {
     const records = document.querySelector('.records');

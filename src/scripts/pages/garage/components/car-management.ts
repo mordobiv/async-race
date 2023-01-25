@@ -1,20 +1,21 @@
 import { createNode, createButton } from '../../../helpers';
 import { createCar, updateCar } from '../../../data-controller/cars';
-import renderGarageCars, { renderSpecificCar } from './garage-cars';
-import renderGaragePagination from './pagination';
+import updateGaragePage from '../modules/update-dynamic-content/update-garage-dynamic-content';
 
 function renderCarSelection(blockType: string) {
   const main = createNode(blockType);
 
+  const blockLabel = createNode('header__label', `${blockType}`);
   const setName = document.createElement('input') as HTMLInputElement;
   setName.className = `${blockType}__input`;
 
-  const color = createNode(`${blockType}__color`, 'Set color: ');
+  const color = createNode(`${blockType}__color color-block`);
+  const colorPickerLabel = createNode(`${blockType}__color__label`, 'Set color: ');
   const colorPicker = document.createElement('input');
   colorPicker.type = 'color';
   colorPicker.className = 'color__picker';
+  color.append(colorPickerLabel, colorPicker);
 
-  color.append(colorPicker);
   const button = createButton(blockType);
   button.addEventListener('click', async () => {
     if (blockType === 'create') {
@@ -22,27 +23,24 @@ function renderCarSelection(blockType: string) {
         name: setName.value,
         color: colorPicker.value,
       };
-      const newCar = await createCar(car);
-      const carsHeaderAmountBlock = document.querySelector('.header__value');
-      if (carsHeaderAmountBlock && carsHeaderAmountBlock.textContent) {
-        carsHeaderAmountBlock.textContent = `${+carsHeaderAmountBlock.textContent + 1}`;
+      await createCar(car);
+      const updatePageOptions = {
+        updateHeader: true,
+        updatePagination: true,
+        updatePageNumber: true,
       }
-      const garageCars = await renderGarageCars();
-      const garageView = document.querySelector('.garage');
-      garageView?.append(garageCars);
+      updateGaragePage(updatePageOptions);
     } else {
       const { carId } = setName.dataset;
       if (carId) {
         const { value } = setName;
         updateCar(+carId, value, colorPicker.value);
-        const garageCars = await renderGarageCars();
-        const garageView = document.querySelector('.garage');
-        garageView?.append(garageCars);
+        updateGaragePage({});
       }
     }
   });
 
-  main.append(setName, color, button);
+  main.append(blockLabel, setName, color, button);
   return main;
 }
 

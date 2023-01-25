@@ -1,8 +1,9 @@
 import renderCarManagement from './components/car-management';
 import renderGarageControls from './components/garage-controls';
-import renderGarageCars from './components/garage-cars';
+import renderCars from './components/garage-cars';
 import { renderGaragePagination } from './components/pagination';
 import { createNode } from '../../helpers';
+import renderGarageHeader from './components/garage-cars-header';
 
 async function renderGaragePage() {
   sessionStorage.setItem('race', 'false');
@@ -13,9 +14,10 @@ async function renderGaragePage() {
     const carManagement = renderCarManagement();
     const garageControls = renderGarageControls();
     const pagination = await renderGaragePagination();
-    const garageCars = await renderGarageCars();
+    const header = await renderGarageHeader();
+    const garageCars = await renderCars();
 
-    garageView.append(carManagement, garageControls, pagination, garageCars);
+    garageView.append(carManagement, garageControls, pagination, header, garageCars);
     body.append(garageView);
   }
 }

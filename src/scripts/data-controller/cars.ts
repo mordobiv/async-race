@@ -65,10 +65,11 @@ export async function updateCar(id: number, name: string, color = '123') {
     },
     body: JSON.stringify(car),
   });
+}
 
-  if (request.ok) {
-    // console.log('wow');
-  } else {
-    throw new Error('Cannot add car');
-  }
+export async function getCarsAmount() {
+  const url = new URL(garageUrl);
+  url.searchParams.set('_limit', '1');
+  const request = await fetch(url);
+  return request.headers.get('X-Total-Count');
 }

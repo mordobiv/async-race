@@ -34,6 +34,14 @@ export function createTableCell(textContent?: string) {
   return node;
 }
 
+export function getCurrentGaragePage() {
+  return sessionStorage.getItem('garagePage') || '1';
+}
+
+export function setCurrentGaragePage(page: string | number) {
+  sessionStorage.setItem('garagePage', `${page}`);
+}
+
 export function renderColorSvg(color: string) {
   return `
   <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">

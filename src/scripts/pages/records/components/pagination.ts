@@ -20,7 +20,7 @@ async function renderWinnersPagination() {
   let recordsAmount = await getRecordsAmount() || 1;
 
   if (recordsAmount && currentPage) {
-    if (+recordsAmount < winnersConfig.limit * +currentPage) next.disabled = true;
+    if (+recordsAmount < (winnersConfig.limit * +currentPage) + 1) next.disabled = true;
   }
 
   previous.addEventListener('click', () => {
@@ -50,7 +50,7 @@ async function renderWinnersPagination() {
     currentPage += 1;
     sessionStorage.setItem('winnersPage', `${currentPage}`);
     if (recordsAmount && currentPage) {
-      if (+recordsAmount < winnersConfig.limit * +currentPage) next.disabled = true;
+      if (+recordsAmount < (winnersConfig.limit * +currentPage) + 1) next.disabled = true;
     }
     renderTable();
   });
