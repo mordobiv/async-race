@@ -1,11 +1,11 @@
-import apiUrl from '../config';
+import { apiUrl } from '../config';
 
 const engineUrl = `${apiUrl}engine`;
 
-export async function startCar(carId: number) {
+export async function startStopCar(carId: number, status: 'started' | 'stopped') {
   const url = new URL(engineUrl);
   url.searchParams.set('id', `${carId}`);
-  url.searchParams.set('status', 'started');
+  url.searchParams.set('status', status);
   const startEngineRequest = await fetch(url, {
     method: 'PATCH',
   });

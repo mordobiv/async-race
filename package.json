@@ -9,10 +9,10 @@
   "main": "index.ts",
   "scripts": {
     "dev": "webpack --mode development",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .ts",
     "watch": "webpack --watch",
-    "style": "sass --watch ./src/main.scss ./dist/style.css"
+    "style": "sass --watch ./src/main.scss ./dist/style.css",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
     "eslint": "^8.32.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-webpack-plugin": "^3.2.0",
+    "gh-pages": "^5.0.0",
     "sass": "^1.57.1",
     "sass-loader": "^13.2.0",
     "ts-loader": "^9.4.2",

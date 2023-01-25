@@ -6,13 +6,27 @@
     // justify-content: space-between;
     padding: 2% 5%;
 
-    .car__img {
-      width: 40px;
-      transform: rotate(90deg);
-    }
+    .flag {
+      text-align: right;
+    
+      &::before {
+        content: '|';
+        display: block;
+        font-size: 30px;
+        position: relative;
+        right: 0;
+        color: red;
+        bottom: 28px;
+      }
 
-    .flag__img {
-      width: 40px;
+      .flag__img {
+        width: 23px;
+      }
     }
   }
+}
+
+#car__img {
+  width: 23px;
+  transform: rotate(90deg);
 }

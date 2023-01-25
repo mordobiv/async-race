@@ -1,4 +1,5 @@
 import { createNode, createButton } from '../helpers';
+import renderRecordsPage from './records/records';
 
 function renderHeader() {
   const header = document.createElement('header');
@@ -23,6 +24,7 @@ function renderHeader() {
     if (garageView && recordsView) {
       garageView.style.display = 'none';
       recordsView.style.display = 'block';
+      renderRecordsPage();
     }
   });
 

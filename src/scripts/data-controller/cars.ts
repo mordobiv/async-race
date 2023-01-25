@@ -1,9 +1,16 @@
-import apiUrl from '../config';
+import { apiUrl } from '../config';
 
 const garageUrl = `${apiUrl}garage/`;
 
-export async function getAllCars() {
-  const response = await fetch(garageUrl);
+export async function getAllCars(options?) {
+  const url = new URL(garageUrl);
+  if (options) {
+    Object.keys(options).forEach((key) => {
+      url.searchParams.set(key, options[key]);
+    });
+  }
+  const response = await fetch(url);
+
   if (response.ok) {
     const allCars = await response.json();
     return allCars;
@@ -14,7 +21,7 @@ export async function getAllCars() {
 export async function getCar(id: number) {
   const response = await fetch(`${garageUrl}${id}`);
   if (response.ok) {
-    console.log(await (response).json());
+    return response.json();
   }
 }
 
@@ -28,10 +35,10 @@ export async function createCar(car: { name: string, color: string }) {
   });
 
   if (request.ok) {
-    console.log('wow');
-  } else {
-    throw new Error('Cannot add car');
+    // console.log('wow');
+    return request.json();
   }
+  throw new Error('Cannot add car');
 }
 
 export async function removeCar(id: number) {
@@ -42,7 +49,7 @@ export async function removeCar(id: number) {
     },
   });
   if (request.ok) {
-    console.log('Perfect');
+    // console.log('Perfect');
   }
 }
 
@@ -60,7 +67,7 @@ export async function updateCar(id: number, name: string, color = '123') {
   });
 
   if (request.ok) {
-    console.log('wow');
+    // console.log('wow');
   } else {
     throw new Error('Cannot add car');
   }
