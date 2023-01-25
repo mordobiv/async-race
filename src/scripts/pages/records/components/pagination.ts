@@ -1,4 +1,4 @@
-import { getRecordsAmount, getWinners } from '../../../data-controller/records';
+import { getRecordsAmount } from '../../../data-controller/records';
 import { createNode, createButton } from '../../../helpers';
 import { winnersConfig } from '../../../config';
 import renderTable from './render-table';
@@ -8,12 +8,16 @@ async function renderWinnersPagination() {
   const previous = createButton('Prev');
   const next = createButton('Next');
 
-  let currentPage = sessionStorage.getItem('winnersPage');
-  if (currentPage && currentPage === '1') {
+  let currentPage = 0;
+  const tmpPage = sessionStorage.getItem('winnersPage');
+  if (tmpPage) {
+    currentPage = +tmpPage;
+  }
+  if (currentPage && currentPage === 1) {
     previous.disabled = true;
   }
 
-  let recordsAmount = +(await getRecordsAmount());
+  let recordsAmount = await getRecordsAmount() || 1;
 
   if (recordsAmount && currentPage) {
     if (+recordsAmount < winnersConfig.limit * +currentPage) next.disabled = true;
@@ -22,7 +26,11 @@ async function renderWinnersPagination() {
   previous.addEventListener('click', () => {
     next.disabled = false;
 
-    currentPage = +sessionStorage.getItem('winnersPage');
+    const tmpPage = sessionStorage.getItem('winnersPage');
+    if (tmpPage) {
+      currentPage = +tmpPage;
+    }
+    
     currentPage -= 1;
     sessionStorage.setItem('winnersPage', `${currentPage}`);
 
@@ -34,7 +42,11 @@ async function renderWinnersPagination() {
 
   next.addEventListener('click', () => {
     previous.disabled = false;
-    let currentPage = +sessionStorage.getItem('winnersPage');
+    let currentPage = 0;
+    const tmpPage = sessionStorage.getItem('winnersPage');
+    if (tmpPage) {
+      currentPage = +tmpPage;
+    }
     currentPage += 1;
     sessionStorage.setItem('winnersPage', `${currentPage}`);
     if (recordsAmount && currentPage) {

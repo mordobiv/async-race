@@ -5,7 +5,7 @@ import {
   createWinner, deleteWinner, getWinner, updateWinner,
 } from '../../../data-controller/records';
 import getDriveStep from '../../../animation/drive';
-import { ICar } from '../../../interfaces/car';
+import ICar from '../../../interfaces/car';
 import { carsPerGaragePage } from '../../../config';
 
 async function renderHeader() {
@@ -21,7 +21,7 @@ async function renderHeader() {
 function renderCurrentPage() {
   const pageNumber = createNode('page-number');
   const pageNumberLabel = createNode('page-number__label', 'Page #');
-  const pageNumberValue = createNode('page-number__value', sessionStorage.getItem('garagePage'));
+  const pageNumberValue = createNode('page-number__value', sessionStorage.getItem('garagePage') || '1');
   pageNumber.append(pageNumberLabel, pageNumberValue);
   return pageNumber;
 }
@@ -126,7 +126,7 @@ async function renderCars() {
   let allCars = [];
   if (garagePage) {
     for (let i = 0; i < carsPerGaragePage; i += 1) {
-      allCars = await getAllCars({ _limit: carsPerGaragePage, _page: sessionStorage.getItem('garagePage') });
+      allCars = await getAllCars({ _limit: carsPerGaragePage, _page: (sessionStorage.getItem('garagePage') || '1') });
     }
   }
   allCars.forEach((car: ICar) => {

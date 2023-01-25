@@ -4,6 +4,4 @@ export interface ICar {
   id: number,
 }
 
-// export interface IAllCars {
-
-// }
+export default ICar;

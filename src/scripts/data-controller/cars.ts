@@ -2,11 +2,11 @@ import { apiUrl } from '../config';
 
 const garageUrl = `${apiUrl}garage/`;
 
-export async function getAllCars(options?) {
+export async function getAllCars(options?: { _limit: number, _page: string}) {
   const url = new URL(garageUrl);
   if (options) {
     Object.keys(options).forEach((key) => {
-      url.searchParams.set(key, options[key]);
+      url.searchParams.set(key, `${options[key as keyof typeof options]}`);
     });
   }
   const response = await fetch(url);

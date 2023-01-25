@@ -6,7 +6,7 @@ import { createNode } from '../../helpers';
 
 async function renderGaragePage() {
   sessionStorage.setItem('race', 'false');
-  sessionStorage.setItem('garagePage', 1);
+  sessionStorage.setItem('garagePage', '1');
   const body = document.querySelector('body');
   const garageView = createNode('garage');
   if (body) {

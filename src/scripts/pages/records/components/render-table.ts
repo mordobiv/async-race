@@ -1,10 +1,11 @@
 import { getWinners } from '../../../data-controller/records';
-import { createImg, createTableCell, createTableHeader, renderColorSvg } from '../../../helpers';
+import { createTableCell, createTableHeader, renderColorSvg } from '../../../helpers';
 import { getAllCars } from '../../../data-controller/cars';
 import IWinner from '../../../interfaces/winner';
 import { winnersConfig } from '../../../config';
+import urlWinnersSort from '../../../interfaces/url-winners-sort';
 
-async function renderTable(urlOptions?) {
+async function renderTable(urlOptions?: urlWinnersSort) {
   const table = document.createElement('table');
   table.className = 'winners';
   const headerRow = document.createElement('tr');
@@ -46,7 +47,7 @@ async function renderTable(urlOptions?) {
   );
   table.append(headerRow);
   const winners = await getWinners(urlOptions);
-  let counter = 0 + winnersConfig.limit * (+sessionStorage.getItem('winnersPage') - 1);
+  let counter = 0 + winnersConfig.limit * (+(sessionStorage.getItem('winnersPage') || 1) - 1);
   const cars = await getAllCars();
   winners.forEach(async (winner: IWinner) => {
     counter += 1;

@@ -1,28 +1,20 @@
 import { apiUrl, winnersConfig } from '../config';
+import urlWinnersSort from '../interfaces/url-winners-sort';
 
 const winnersUrl = `${apiUrl}winners/`;
 
-export async function getWinners(renderOptions?: { sort: 'wins' | 'time', order: 'ASC' | 'DESC' }) {
-  let urlOptions = {};
-  console.log(renderOptions);
-
+export async function getWinners(renderOptions?: urlWinnersSort) {
+  let urlOptions = winnersConfig;
   if (renderOptions) {
-    Object.keys(winnersConfig).forEach((key) => {
-      if (!(key in renderOptions)) {
-        urlOptions[key] = winnersConfig[key];
-      } else {
-        urlOptions[key] = renderOptions[key];
-      }
-    });
-  } else urlOptions = winnersConfig;
-  urlOptions.page = sessionStorage.getItem('winnersPage');
+    if (renderOptions.order) urlOptions.order = renderOptions.order
+    if (renderOptions.sort) urlOptions.sort = renderOptions.sort;;
+  }
 
-  // urlOptions.limit = winnersConfig.limit;
-  // urlOptions.page = winnersConfig.page;
+  urlOptions.page = +(sessionStorage.getItem('winnersPage') || 1);
 
   const url = new URL(winnersUrl);
   Object.keys(urlOptions).forEach((key) => {
-    url.searchParams.set(`_${key}`, `${urlOptions[key]}`);
+    url.searchParams.set(`_${key}`, `${urlOptions[key as keyof typeof urlOptions]}`);
   });
   const winnersRequest = await fetch(url);
   if (winnersRequest.ok) {
@@ -79,9 +71,7 @@ export async function updateWinner(id: number, wins: number, time: number) {
       time,
     }),
   });
-  if (updateWinnerRequest.ok) {
-    return updateWinnerRequest.json();
-  }
+  return updateWinnerRequest.json();
 }
 
 export async function getRecordsAmount() {

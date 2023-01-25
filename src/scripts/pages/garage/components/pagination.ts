@@ -23,7 +23,7 @@ export async function renderGaragePagination() {
     carsAmount = (await getAllCars()).length;
 
     currentPage = sessionStorage.getItem('garagePage');
-    sessionStorage.setItem('garagePage', (+currentPage) + 1);
+    sessionStorage.setItem('garagePage', `${(+(currentPage || 0) + 1)}`);
     currentPage = sessionStorage.getItem('garagePage');
 
     if (carsAmount && currentPage) {
@@ -40,7 +40,7 @@ export async function renderGaragePagination() {
   previous.addEventListener('click', async () => {
     next.disabled = false;
     currentPage = sessionStorage.getItem('garagePage');
-    sessionStorage.setItem('garagePage', (+currentPage) - 1);
+    sessionStorage.setItem('garagePage', `${(+(currentPage || 1)) - 1}`);
     currentPage = sessionStorage.getItem('garagePage');
     if (currentPage && currentPage === '1') previous.disabled = true;
 

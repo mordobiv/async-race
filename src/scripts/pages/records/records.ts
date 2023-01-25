@@ -1,4 +1,3 @@
-import { getWinners } from '../../data-controller/records';
 import { createNode } from '../../helpers';
 import renderWinnersPagination from './components/pagination';
 import renderTable from './components/render-table';
