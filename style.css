@@ -78,6 +78,10 @@ td {
   border: 1px solid black;
 }
 
+.create, .edit {
+  display: flex;
+}
+
 .car-block {
   border: 1px solid black;
 }
