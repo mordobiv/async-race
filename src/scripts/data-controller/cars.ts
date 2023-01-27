@@ -34,11 +34,11 @@ export async function createCar(car: { name: string, color: string }) {
     body: JSON.stringify(car),
   });
 
-  if (request.ok) {
+  // if (request.ok) {
     // console.log('wow');
-    return request.json();
-  }
-  throw new Error('Cannot add car');
+  return request.json();
+  // }
+  // throw new Error('Cannot add car');
 }
 
 export async function removeCar(id: number) {

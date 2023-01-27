@@ -1,6 +1,5 @@
 import { createNode, createButton } from '../../../helpers';
 import { brands, models } from '../../../data-controller/cars-name';
-import brands
 import { createCar } from '../../../data-controller/cars';
 import renderGarageCars, { renderSpecificCar } from './garage-cars';
 import { carsToGenerate } from '../../../config';
