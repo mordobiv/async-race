@@ -3,6 +3,7 @@ import { brands, models } from '../../../data-controller/cars-name';
 import { createCar } from '../../../data-controller/cars';
 import renderGarageCars, { renderSpecificCar } from './garage-cars';
 import { carsToGenerate } from '../../../config';
+import { startRace } from './drive-car';
 
 function renderGarageControls() {
   const garageControls = createNode('controls');
@@ -10,10 +11,16 @@ function renderGarageControls() {
   const raceButton = createButton('race');
   raceButton.addEventListener('click', () => {
     sessionStorage.setItem('race', 'true');
-    document.querySelectorAll('.button__start').forEach((el) => (el as HTMLButtonElement).click());
+    const stopButtons = document.querySelectorAll('.button__stop');
+    stopButtons.forEach((button) => (button as HTMLButtonElement).click())
+    startRace();
   });
   const resetButton = createButton('reset');
-  resetButton.addEventListener('click', () => document.querySelectorAll('.button__stop').forEach((el) => (el as HTMLButtonElement).click()));
+  resetButton.disabled = true;
+  resetButton.addEventListener('click', () => {
+    document.querySelectorAll('.button__stop').forEach((el) => (el as HTMLButtonElement).click())
+    raceButton.disabled = false;
+  });
   const generateButton = createButton('generate');
   generateButton.addEventListener('click', async () => {
     const nextButton = document.querySelector('.next__garage') as HTMLButtonElement;

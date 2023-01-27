@@ -32,6 +32,8 @@ export async function renderGaragePagination() {
   }
 
   next.addEventListener('click', async () => {
+    const raceButton = document.querySelector('.button__race') as HTMLButtonElement;
+    raceButton.disabled = false;
     next.disabled = true;
     const resetButton = document.querySelector('.button__reset') as HTMLButtonElement;
     if (resetButton) resetButton.click();
@@ -49,6 +51,8 @@ export async function renderGaragePagination() {
   });
 
   previous.addEventListener('click', async () => {
+    const raceButton = document.querySelector('.button__race') as HTMLButtonElement;
+    raceButton.disabled = false;
     previous.disabled = true;
     currentPage = getCurrentGaragePage();
     setCurrentGaragePage(+currentPage - 1);

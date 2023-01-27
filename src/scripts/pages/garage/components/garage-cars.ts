@@ -8,6 +8,7 @@ import getDriveStep from '../../../animation/drive';
 import ICar from '../../../interfaces/car';
 import { carsPerGaragePage } from '../../../config';
 import updateGaragePage from '../modules/update-dynamic-content/update-garage-dynamic-content';
+import { driveCar, startRace, startSingleCar } from './drive-car';
 
 export function renderSpecificCar(car: ICar) {
   const carBlock = createNode('car-block');
@@ -57,53 +58,19 @@ export function renderSpecificCar(car: ICar) {
   start.disabled = false;
   stop.disabled = true;
   start.dataset.carId = `${car.id}`;
-  let carAnimationIntervalId = 0;
-  start.addEventListener('click', async () => {
-    start.classList.add('button__disabled');
-    start.disabled = true;
-    const startRace = new Date().valueOf();
-    const velocity = await startStopCar(car.id, 'started');
-    const driveAnimationStep = getDriveStep(velocity);
-    stop.disabled = false;
 
-    carAnimationIntervalId = window.setInterval(async () => {
-      if (carIconBlock) {
-        if (+carIconBlock.style.translate.slice(0, -1) >= 100) {
-          clearInterval(carAnimationIntervalId);
-          const endRace = new Date().valueOf();
-          const raceDuration = ((endRace - startRace) / 1000).toFixed(2);
-          if (sessionStorage.getItem('race') && sessionStorage.getItem('race') === 'true') {
-            sessionStorage.setItem('race', 'false');
-            alert(`${car.name} has won!\nTime: ${raceDuration}s`);
-            const carWin = await getWinner(car.id);
-            if (carWin === 404) {
-              createWinner(car.id, +raceDuration);
-              const recordsAmount = document.querySelector('.records__amount');
-              if (recordsAmount && recordsAmount.textContent) {
-                recordsAmount.textContent = `${+recordsAmount.textContent + 1}`;
-              }
-            } else {
-              const newTime = +raceDuration < carWin.time ? +raceDuration : carWin.time;
-              updateWinner(car.id, carWin.wins + 1, +newTime);
-            }
-          }
-          return;
-        }
-        const currentTranslateValue = carIconBlock.style.translate;
-        const newTranslateValue = currentTranslateValue ? `${+currentTranslateValue.slice(0, -1) + driveAnimationStep.stepDistance}%` : `${driveAnimationStep.stepDistance}%`;
-        carIconBlock.style.translate = newTranslateValue;
-      }
-    }, driveAnimationStep.stepDistance);
-    carBlock.dataset.intervalId = `${carAnimationIntervalId}`;
-    const isEngineOk = await checkEngine(car.id);
-    if (!isEngineOk) clearInterval(carAnimationIntervalId);
+  start.addEventListener('click', async () => {
+    startSingleCar(carBlock);
   });
-  stop.addEventListener('click', () => {
+
+  stop.addEventListener('click', async () => {
     stop.disabled = true;
     start.disabled = false;
-    startStopCar(car.id, 'stopped');
+    await startStopCar(car.id, 'stopped');
     carIconBlock.style.translate = '';
-    clearInterval(carAnimationIntervalId);
+    const carIntervalId = carBlock.dataset['intervalId'];
+    console.log(carIntervalId);
+    clearInterval(carIntervalId);
   });
   controls.append(start, stop);
 
